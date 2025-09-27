@@ -309,6 +309,25 @@ function mytheme_enqueue_google_fonts() {
 add_action( 'wp_enqueue_scripts', 'mytheme_enqueue_google_fonts' );
 // end google fonts
 
+// Fix hreflang locale consistency for Falang
+function fix_falang_hreflang_locales($hreflangs) {
+    $corrected_hreflangs = array();
+
+    foreach ($hreflangs as $lang => $url) {
+        // Convert to proper ISO format: en-US, ru-RU (uppercase country codes)
+        if ($lang !== 'x-default') {
+            $parts = explode('-', $lang);
+            if (count($parts) === 2) {
+                $lang = strtolower($parts[0]) . '-' . strtoupper($parts[1]);
+            }
+        }
+        $corrected_hreflangs[$lang] = $url;
+    }
+
+    return $corrected_hreflangs;
+}
+add_filter('falang_hreflang', 'fix_falang_hreflang_locales');
+
 // delete extra translatons
 // add_action('init', function() {
 //     $option_name = 'falang_wpml_strings';
