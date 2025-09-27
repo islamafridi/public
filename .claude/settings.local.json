@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/mafri/Local Sites/5plays/app/**)",
+      "Read(//c/Users/mafri/Local Sites/5plays/**)",
+      "Bash(flutter create:*)",
+      "Bash(flutter pub:*)",
+      "Bash(flutter packages pub run:*)",
+      "Bash(flutter analyze:*)",
+      "Bash(flutter:*)",
+      "Bash(where android)",
+      "Bash(./gradlew --stop)",
+      "Bash(ipconfig)",
+      "Bash(findstr:*)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://5plays.org/wp-json/apk-templates/v1/settings\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://5plays.org/wp-json/apk-templates/v1/categories\")",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" \"https://5plays.org/wp-json/apk-templates/v1/apps?per_page=5\")",
+      "Bash(cat:*)",
+      "Bash(curl -s \"https://5plays.org/wp-json/apk-templates/v1/settings\")",
+      "Bash(curl -s \"https://5plays.org/wp-json/apk-templates/v1/apps?per_page=1\")"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

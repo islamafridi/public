@@ -1,0 +1,442 @@
+/** Inits **/
+:root {
+    --at-spacing-0-5: .25rem;
+    --at-spacing-1: .5rem;
+    --at-spacing-2: 1rem;
+    --at-spacing-3: 1.5rem;
+    --at-spacing-4: 2rem;
+}
+
+/** Utils **/
+
+#at-importer .at-mt-0-5 {
+    margin-top: var(--at-spacing-0-5);
+}
+
+#at-importer .at-mb-0-5 {
+    margin-bottom: var(--at-spacing-0-5);
+}
+
+#at-importer .at-mt-1 {
+    margin-top: var(--at-spacing-1);
+}
+
+#at-importer .at-mb-1 {
+    margin-bottom: var(--at-spacing-1);
+}
+
+#at-importer .at-mt-2 {
+    margin-top: var(--at-spacing-2);
+}
+
+#at-importer .at-mb-2 {
+    margin-bottom: var(--at-spacing-2);
+}
+
+#at-importer .at-mt-3 {
+    margin-top: var(--at-spacing-3);
+}
+
+#at-importer .at-mb-3 {
+    margin-bottom: var(--at-spacing-3);
+}
+
+#at-importer .at-mt-4 {
+    margin-top: var(--at-spacing-4);
+}
+
+#at-importer .at-mb-4 {
+    margin-bottom: var(--at-spacing-4);
+}
+
+#at-importer .at-pt-1 {
+    padding-top: var(--at-spacing-1);
+}
+
+#at-importer .at-pb-1 {
+    padding-bottom: var(--at-spacing-1);
+}
+
+#at-importer .at-pt-2 {
+    padding-top: var(--at-spacing-2);
+}
+
+#at-importer .at-pb-2 {
+    padding-bottom: var(--at-spacing-2);
+}
+
+#at-importer .at-pt-3 {
+    padding-top: var(--at-spacing-3);
+}
+
+#at-importer .at-pb-3 {
+    padding-bottom: var(--at-spacing-3);
+}
+
+#at-importer .at-pt-4 {
+    padding-top: var(--at-spacing-4);
+}
+
+#at-importer .at-pb-4 {
+    padding-bottom: var(--at-spacing-4);
+}
+
+#at-importer .at-bb-1 {
+    border-bottom: 1px solid #b5bfc9;
+}
+
+#at-importer .at-w-full {
+    width: 100%;
+}
+
+#at-importer {
+    width: 100%;
+    position: relative;
+    margin-top: .8rem;
+}
+
+#at-importer h2,
+h3,
+ul,
+li,
+p {
+    margin: 0;
+    padding: 0;
+}
+
+#at-importer h2 {
+    font-size: 19px;
+    text-align: center;
+}
+
+/** fields */
+
+/* URL */
+.at-ipt-url {
+    width: 100%;
+    margin-right: var(--at-spacing-1);
+    font-size: 15px;
+    border-radius: 0 !important;
+    border-color: #d0d2d7 !important;
+    box-shadow: none !important;
+    padding: 3px 10px !important;
+}
+
+/* Text & Password */
+.at-ipt-text,
+.at-ipt-password,
+.at-select {
+    width: 100%;
+    font-size: 15px;
+    border-radius: 0 !important;
+    border-color: #d0d2d7 !important;
+    box-shadow: none !important;
+    padding: 3px 10px !important;
+}
+
+/* Switch Button */
+.at-switch-btn {
+    position: relative;
+    display: inline-block;
+    width: 38px;
+    height: 20px;
+}
+
+.at-switch-btn input {
+    display: none;
+}
+
+.at-switch {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    transition: .4s;
+    border-radius: 34px;
+}
+
+.at-switch-btn input:checked+.at-switch {
+    background-color: #3ac57a;
+}
+
+.at-switch-btn input:checked+.at-switch.at-apt-switch {
+    background-color: #fe6446;
+}
+
+.at-switch:before {
+    position: absolute;
+    content: "";
+    height: 14px;
+    width: 14px;
+    left: 4px;
+    bottom: 3px;
+    background-color: white;
+    transition: .4s;
+    border-radius: 50%;
+}
+
+.at-switch-btn input:checked+.at-switch:before {
+    transform: translateX(16px);
+}
+
+/* Buttons */
+.at-btn-container {
+    display: flex;
+    align-items: center;
+    height: 35px;
+}
+
+.at-btn {
+    display: inline-block;
+    padding: 5px 10px;
+    font-weight: 500;
+    background-color: transparent;
+    cursor: pointer;
+    box-shadow: none;
+    width: auto;
+}
+
+.at-btn-success {
+    color: #28a745;
+    border: 2px solid #28a745;
+    box-shadow: none;
+}
+
+
+.at-btn-success:hover,
+.at-btn-success:focus {
+    color: #ffffff;
+    background-color: #28a745;
+}
+
+.at-btn-danger {
+    color: #dc3545;
+    border: 2px solid #dc3545;
+    box-shadow: none;
+}
+
+.at-btn-danger:hover,
+.at-btn-danger:focus {
+    color: #ffffff;
+    background-color: #dc3545;
+}
+
+.at-btn-primary {
+    color: #007cba;
+    border: 2px solid #007cba;
+    box-shadow: none;
+}
+
+.at-btn-primary:hover,
+.at-btn-primary:focus {
+    color: #ffffff;
+    background-color: #007cba;
+}
+
+.at-btn-orange {
+    color: #fe6446;
+    border: 2px solid #fe6446;
+    box-shadow: none;
+}
+
+
+.at-btn-orange:hover,
+.at-btn-orange:focus {
+    color: #ffffff;
+    background-color: #fe6446;
+}
+
+/** Header */
+.apktemplates-header {
+    display: flex;
+    flex-flow: row wrap;
+    margin-left: -20px;
+    padding: 13px 15px;
+    background-color: #fff;
+    border-bottom: 1px solid #b5bfc9;
+}
+
+.apktemplates-logo {
+    position: relative;
+    margin-right: 15px;
+    padding-right: 15px;
+}
+
+.apktemplates-logo a {
+    display: block;
+    position: relative;
+}
+
+.apktemplates-logo:after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 1px;
+    height: 66px;
+    margin: -12px 0;
+    content: '';
+    background: #b5bfc9;
+}
+
+.apktemplates-title {
+    font-size: 22px;
+    font-weight: 500;
+    margin: 6px auto 0 0;
+}
+
+.small-version {
+    font-size: 15px;
+    color: grey;
+}
+
+/** Importer */
+
+.at-importer-container {
+    max-width: 680px;
+    padding: 20px;
+    background-color: #ffffff;
+}
+
+.at-inline-ipt {
+    display: flex;
+}
+
+.at-inline-ipt button {
+    flex: 1 0 auto;
+}
+
+.at-inline-container {
+    display: flex;
+    column-gap: var(--at-spacing-2);
+}
+
+.at-import-table {
+    width: 100%;
+}
+
+.at-import-table tbody tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: var(--at-spacing-1);
+    row-gap: var(--at-spacing-1);
+    margin-bottom: var(--at-spacing-1);
+}
+
+.at-import-table h3 {
+    font-size: 15px;
+    margin-bottom: var(--at-spacing-1);
+}
+
+.process-log li,
+.process-error-log li {
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+.at-success-tick {
+    color: #28a745;
+}
+
+.at-danger-tick {
+    color: #cc1818;
+}
+
+.at-warning-tick {
+    color: #ffcc00;
+}
+
+/** APK search */
+
+.at-apk-results-container article {
+    display: grid;
+    grid-template-columns: 96px 1fr auto;
+    gap: var(--at-spacing-2);
+}
+
+.at-apk-results-container article:not(:last-child) {
+    border-bottom: 1px solid #d0d2d7;
+    margin-bottom: var(--at-spacing-1);
+    padding-bottom: var(--at-spacing-1);
+}
+
+.at-apk-results-container article img {
+    height: auto;
+    width: 100%;
+    border-radius: 4px;
+}
+
+.at-apk-info {
+    overflow: hidden;
+}
+
+.at-apk-info h3 {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.at-apk-info .at-apk-dev {
+    color: #28a745;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.at-apk-info .at-apk-rating span i {
+    color: #fcb900;
+}
+
+.at-apk-info .at-apk-size span i {
+    color: #28a745;
+}
+
+.at-apk-results-container article button {
+    align-self: start;
+}
+
+.at-apk-no-results {
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+}
+
+@media screen and (max-width: 782px) {
+    #wpcontent {
+        padding-right: 10px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .at-inline-ipt {
+        flex-wrap: wrap;
+        row-gap: var(--at-spacing-1);
+    }
+
+    .at-inline-ipt .at-ipt-url {
+        margin-right: 0;
+    }
+
+    .at-inline-ipt button {
+        flex: none;
+        float: right;
+    }
+
+    .at-import-table tbody tr {
+        grid-template-columns: 1fr;
+        row-gap: var(--at-spacing-1);
+    }
+
+    .at-apk-results-container article {
+        grid-template-columns: 96px 1fr;
+    }
+
+    .at-apk-results-container article button {
+        grid-column: span 2;
+    }
+}

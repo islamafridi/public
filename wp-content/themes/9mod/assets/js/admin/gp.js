@@ -1,0 +1,267 @@
+jQuery(document).ready(function ($) {
+    $('#at_advanced_options').change(function () {
+        if (this.checked) {
+            $('.at-import-table').fadeIn(150);
+        } else {
+            $('.at-import-table').fadeOut(150);
+        }
+    });
+
+    $(document).on('submit', '#at-gp-importer-form', async function (e) {
+        e.preventDefault();
+
+        var form = $(this);
+        var inputs = form.find("input, select, button, textarea");
+        var serialized_data = form.find(":input:not([type='submit']):not([type='button'])").map(function () {
+            if (this.type === 'checkbox') {
+                return { name: this.name, value: this.checked ? true : false };
+            } else {
+                return { name: this.name, value: $(this).val() };
+            }
+        }).get();
+
+        $('.at-importer-results').hide();
+        $('.process-log').hide();
+        $('.process-error-log').hide();
+
+        if ($('.process-log')) {
+            $('.process-log').empty();
+        }
+
+        if ($('.process-error-log')) {
+            $('.process-error-log').empty();
+        }
+
+        let gp_url;
+        let advanced_options;
+        let post_status;
+        let post_thumbnail_format;
+        let post_thumbnail_quality;
+        let import_screenshots;
+        let post_screenshots_format;
+        let post_language;
+        let post_title_start;
+        let post_title_end;
+        let mod_feature;
+
+        $.each(serialized_data, function (index, element) {
+            switch (element.name) {
+                case "at_gp_url":
+                    gp_url = element.value;
+                    break;
+                case "at_advanced_options":
+                    advanced_options = element.value;
+                    break;
+                case "at_post_status":
+                    post_status = element.value;
+                    break;
+                case "at_post_title_start":
+                    post_title_start = element.value;
+                    break;
+                case "at_post_title_end":
+                    post_title_end = element.value;
+                    break;
+                case "at_mod_feature":
+                    mod_feature = element.value;
+                    break;
+                case "at_post_thumbnail_format":
+                    post_thumbnail_format = element.value;
+                    break;
+                case "at_post_thumbnail_quality":
+                    post_thumbnail_quality = element.value;
+                    break;
+                case "at_import_screenshots":
+                    import_screenshots = element.value;
+                    break;
+                case "at_post_screenshots_format":
+                    post_screenshots_format = element.value;
+                    break;
+                case "at_post_language":
+                    post_language = element.value;
+                    break;
+            }
+        });
+
+        inputs.prop("disabled", true);
+
+        append_success_info('APK Extraction started...');
+
+        try {
+            const create_post_data = {
+                action: 'at_gp_create_post',
+                nonce: apktemplates_ajax_vars.nonce,
+                gplay_url: gp_url,
+                is_advanced_options: advanced_options,
+                post_status: post_status,
+                post_title_start: post_title_start,
+                post_title_end: post_title_end,
+                mod_feature: mod_feature,
+                post_thumbnail_format: post_thumbnail_format,
+                post_thumbnail_quality: post_thumbnail_quality,
+                import_screenshots: import_screenshots,
+                post_screenshots_format: post_screenshots_format,
+                post_language: post_language
+            };
+
+            let apk_file_info = await at_ajax_request(apktemplates_ajax_vars.ajax_url, 'POST', create_post_data);
+
+            apk_file_info = JSON.parse(apk_file_info);
+            const status = apk_file_info?.status;
+
+            if (status === 'error') {
+                handle_ajax_error(apk_file_info?.data?.message);
+                inputs.prop("disabled", true);
+                return;
+            }
+
+            append_success_info(apk_file_info?.data?.message);
+
+        } catch (error) {
+            if (error instanceof SyntaxError) {
+                handle_ajax_error("Error parsing JSON response.");
+            } else {
+                handle_ajax_error("An unexpected error occurred.");
+            }
+        } finally {
+            $('#at-gp-url').prop('disabled', null);
+            $('#at-gp-url').val('');
+            inputs.prop("disabled", null);
+        }
+    });
+
+    $(document).on('click', '#at-gp-search-submit', async function (e) {
+        e.preventDefault();
+        var search_query = $('#at-gp-search-query').val();
+
+        if (search_query.length < 3) {
+            showSnackbar("Enter atleast 3 letters");
+            return;
+        }
+
+        $('.at-apk-results-container').html('<div class="at-apk-no-results"><span class="spinner is-active"></span></div>');
+
+        try {
+            const search_post_data = {
+                action: 'at_gp_search_posts',
+                nonce: apktemplates_ajax_vars.nonce,
+                search_query: search_query
+            };
+
+            let search_results = await at_ajax_request(apktemplates_ajax_vars.ajax_url, 'POST', search_post_data);
+
+            search_results = JSON.parse(search_results);
+
+            let results = search_results.data;
+
+            if (search_results.status === "error") {
+                $('.at-apk-results-container').html('<div class="at-apk-no-results"><p>' + results.message + '</p></div>');
+                return;
+            }
+
+            let list_html = results.map(result => (
+                '<article>' +
+                '   <img src="' + (result.apk_thumbnail || '') + '" referrerPolicy="no-referrer">' +
+                '   <div class="at-apk-info">' +
+                '       <h3 class="at-mb-0-5">' + (result.apk_name || 'Unknown App') + '</h3>' +
+                '       <p class="at-apk-dev at-mb-0-5">' + ((result.apk_developer) || 'Unknown Developer') + '</p>' +
+                '       <div class="at-apk-rating at-mb-0-5">' +
+                '           <span><i class="fa fa-star"></i> ' + ((result.apk_rating_text) || 'N/A') + '</span>' +
+                '       </div>' +
+                '       <div class="at-apk-size">' +
+                '           <span><i class="fa fa-download"></i> ' + (result.apk_downloads || '') + '</span>' +
+                '       </div>' +
+                '   </div>' +
+                '   <button class="at-btn at-btn-success at-w-full" data-gp-url="https://play.google.com/store/apps/details?id=' + (result.apk_id || '') + '">Get URL</button>' +
+                '</article>'
+            ));
+
+            $('.at-apk-no-results').remove();
+            $('.at-apk-results-container').html(list_html);
+
+        } catch (error) {
+            if (error.status === 500) {
+                alert(`Internal Server Error (500)!. ${error.responseText}`);
+            } else if (error.status === 524) {
+                alert('Server connection timeout.');
+            } else {
+                alert(`Error: ${error}`);
+            }
+        } finally {
+
+        }
+
+    });
+
+    $('.at-apk-results-container').on('click', '.at-btn-success', function () {
+        const gp_url = $(this).data('gp-url');
+        $('#at-gp-url').val(gp_url);
+        $('#at-importer').animate({ scrollTop: 0 }, 800);
+        $('#at-gp-url').focus();
+    });
+
+    function append_success_info(info_text) {
+        $('.at-importer-results').show();
+        $('.process-log').show();
+        $('.process-log').append(`<li><span class="at-success-tick"><i class="fa fa-check-circle "></i></span>${'  ' + info_text}</li>`);
+    }
+
+    function append_warning_info(info_text) {
+        $('.at-importer-results').show();
+        $('.process-log').show();
+        $('.process-log').append(`<li><span class="at-warning-tick"><i class="fa fa-exclamation-circle "></i></span>${'  ' + info_text}</li>`);
+    }
+
+    function handle_ajax_error(info_text) {
+        $('.at-importer-results').show();
+        $('.process-error-log').show();
+        $('.process-error-log').append(`<li><span class="at-danger-tick"><i class="fa fa-times-circle"></i></span>${'  ' + info_text}</li>`);
+    }
+
+    async function at_ajax_request(url, type, data) {
+        try {
+            const response = await $.ajax({
+                url: url,
+                type: type,
+                data: data,
+            });
+            return response;
+        } catch (error) {
+            alert(`Error: ${error.message || error}`);
+        }
+    }
+
+
+    function showSnackbar(message) {
+        var snackbar = $('<div id="at-snackbar">' + message + '</div>');
+
+        $('body').append(snackbar);
+
+        snackbar.css({
+            'position': 'fixed',
+            'bottom': '7%',
+            'left': '50%',
+            'transform': 'translateX(-50%)',
+            'background-color': '#111',
+            'color': '#fff',
+            'font-size': '15px',
+            'font-weight': '500',
+            'padding': '15px',
+            'border-radius': '2px',
+            'box-shadow': '0 0 10px rgba(0, 0, 0, 0.2)',
+            'z-index': '999',
+            'opacity': '0',
+            'transition': 'opacity 0.3s',
+        });
+
+        setTimeout(function () {
+            snackbar.css('opacity', '1');
+        }, 300);
+
+        setTimeout(function () {
+            snackbar.css('opacity', '0');
+            setTimeout(function () {
+                snackbar.remove();
+            }, 300);
+        }, 4000);
+    }
+});
